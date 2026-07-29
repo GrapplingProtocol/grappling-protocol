@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grappling Protocol Company — The Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#121417;
+    --bg-1:#1a1d22;
+    --line:rgba(232,230,223,0.1);
+    --ink:#e8e6df;
+    --ink-dim:rgba(232,230,223,0.68);
+    --rust:#c4501f;
+    --display:'Big Shoulders Display',sans-serif;
+    --body:'IBM Plex Sans',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg-0);color:var(--ink);font-family:var(--body);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 1.5rem;}
+
+  header.hero{padding:6.5rem 0 3rem;}
+  @media (max-width:480px){ header.hero{padding:4rem 0 2.5rem;} }
+  .kicker{font-family:var(--mono);font-size:0.78rem;letter-spacing:.12em;color:var(--rust);
+    text-transform:uppercase;margin:0 0 1.1rem;}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(2.8rem,11vw,5.6rem);
+    line-height:0.92;letter-spacing:0.01em;margin:0 0 1.3rem;text-transform:uppercase;}
+  h1 em{font-style:normal;color:var(--rust);}
+  .lede{font-size:clamp(1rem,2.2vw,1.18rem);color:var(--ink-dim);max-width:46ch;line-height:1.6;margin:0;}
+
+  .tape{display:flex;flex-wrap:wrap;margin:3rem 0 0;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);}
+  .stat{flex:1 1 140px;padding:1.1rem 1.2rem;border-right:1px solid var(--line);}
+  .stat:last-child{border-right:none;}
+  .stat-value{font-family:var(--mono);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);color:var(--ink);}
+  .stat-value sup{color:var(--rust);font-size:0.7em;}
+  .stat-label{font-family:var(--mono);font-size:0.66rem;letter-spacing:.06em;
+    color:var(--ink-dim);text-transform:uppercase;margin-top:.3rem;line-height:1.4;}
+
+  section{padding:4.5rem 0;}
+  section.journey{border-top:1px solid var(--line);}
+  .section-head{margin-bottom:2.6rem;}
+  .section-head .kicker{margin-bottom:.5rem;}
+  .section-head h2{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,5vw,2.6rem);
+    margin:0;text-transform:uppercase;letter-spacing:.01em;}
+
+  .timeline{display:flex;flex-direction:column;gap:2.3rem;}
+  .entry{display:flex;gap:1.1rem;align-items:flex-start;}
+  .stripe{flex:0 0 auto;width:9px;height:32px;border-radius:2px;margin-top:3px;
+    background:var(--bg-1);border:1px solid var(--line);
+    transition:background .6s ease,border-color .6s ease;}
+  .entry.in-view .stripe{background:var(--rust);border-color:var(--rust);}
+  .entry-body .tag{font-family:var(--mono);font-size:0.7rem;letter-spacing:.08em;
+    color:var(--rust);text-transform:uppercase;margin-bottom:.35rem;}
+  .entry-body h3{font-family:var(--display);font-weight:700;font-size:1.5rem;
+    margin:0 0 .4rem;text-transform:uppercase;letter-spacing:.01em;}
+  .entry-body p{margin:0;color:var(--ink-dim);font-size:0.96rem;line-height:1.65;max-width:50ch;}
+
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
+  @media (max-width:680px){.pillars{grid-template-columns:1fr;}}
+  .pillar{background:var(--bg-1);border:1px solid var(--line);border-radius:6px;padding:1.5rem;}
+  .pillar h3{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:0 0 .6rem;
+    text-transform:uppercase;color:var(--rust);}
+  .pillar p{margin:0;font-size:0.92rem;line-height:1.6;color:var(--ink-dim);}
+
+  section.close{border-top:1px solid var(--line);text-align:left;}
+  .close h2{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.2rem);
+    text-transform:uppercase;line-height:1;margin:0 0 1rem;}
+  .close p{color:var(--ink-dim);max-width:46ch;line-height:1.6;margin:0 0 1.8rem;}
+  .btn{display:inline-block;font-family:var(--mono);font-weight:500;font-size:0.85rem;
+    letter-spacing:.04em;text-transform:uppercase;color:var(--ink);background:var(--rust);
+    padding:0.9rem 1.6rem;border-radius:3px;text-decoration:none;transition:opacity .2s;}
+  .btn:hover{opacity:0.85;}
+  .btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+
+  footer{padding:2.2rem 0 3rem;border-top:1px solid var(--line);}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+  footer p{font-family:var(--mono);font-size:0.74rem;color:var(--ink-dim);margin:0;letter-spacing:.03em;}
+  .social-links{display:flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.74rem;}
+  .social-links a{color:var(--ink-dim);text-decoration:none;transition:color .2s;}
+  .social-links a:hover{color:var(--rust);}
+  .social-links .divider{color:var(--line);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">Sports Nutrition × BJJ Coaching</p>
+    <h1>Grappling<br><em>Protocol</em></h1>
+    <p class="lede">Twelve-plus years on the mat. A few hard-earned credentials. One job: make nutrition the easiest part of your training.</p>
+  </header>
+
+  <div class="tape reveal">
+    <div class="stat">
+      <div class="stat-value"><span id="yearsCount">0</span><sup>+</sup></div>
+      <div class="stat-label">Yrs grappling</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">CISSN</div>
+      <div class="stat-label">Sports nutritionist</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">CSCS</div>
+      <div class="stat-label">Strength &amp; cond. specialist</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">MS</div>
+      <div class="stat-label">Nutrition &amp; human perf. — in progress</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">Nogi</div>
+      <div class="stat-label">BJJ coach</div>
+    </div>
+  </div>
+
+  <section class="journey">
+    <div class="section-head reveal">
+      <p class="kicker">The journey</p>
+      <h2>How I got here</h2>
+    </div>
+    <div class="timeline">
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">12+ years ago</div>
+          <h3>First mat, first lesson</h3>
+          <p>Started training at a BJJ school just down the road from home — no grand plan, just curiosity that turned into a habit.</p>
+        </div>
+      </div>
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">College years</div>
+          <h3>Stepped off the mat</h3>
+          <p>Training took a back seat while I focused on finishing my degree in exercise science and sports nutrition.</p>
+        </div>
+      </div>
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">The return</div>
+          <h3>Back on, full time</h3>
+          <p>Once school wrapped up, grappling moved back to the center of my life — this time for good.</p>
+        </div>
+      </div>
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">The turning point</div>
+          <h3>Watching bad weight cuts</h3>
+          <p>Too many training partners were cutting weight the hard way — starving, sweating, guessing. I started digging into how it could be done better, supplementation included.</p>
+        </div>
+      </div>
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">Credentialed</div>
+          <h3>CISSN &amp; CSCS</h3>
+          <p>Earned my Certified Sports Nutritionist credential through ISSN and my Strength &amp; Conditioning Specialist certification through the NSCA.</p>
+        </div>
+      </div>
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">Right now</div>
+          <h3>Finishing my Master's</h3>
+          <p>Currently in graduate school, completing a Master's in Nutrition and Human Performance — still learning, still refining the protocol.</p>
+        </div>
+      </div>
+      <div class="entry reveal">
+        <div class="stripe"></div>
+        <div class="entry-body">
+          <div class="tag">Today</div>
+          <h3>Coaching the mat and the kitchen</h3>
+          <p>I work with grappling and combat sports athletes, bringing clarity and accountability to their nutrition and supplementation. Off the clock, I coach nogi BJJ at a local gym.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="approach">
+    <div class="section-head reveal">
+      <p class="kicker">The approach</p>
+      <h2>What you actually get</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <h3>Clarity</h3>
+        <p>No more guessing what to eat before a tournament or how to time a cut. A plan you understand, not just one you follow.</p>
+      </div>
+      <div class="pillar reveal">
+        <h3>Accountability</h3>
+        <p>Athletes train hard because someone's watching. Nutrition works the same way — consistent check-ins, real adjustments.</p>
+      </div>
+      <div class="pillar reveal">
+        <h3>Simplicity</h3>
+        <p>Meal planning and supplementation stripped down to what actually moves the needle — nothing you need a chemistry degree to follow.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="reveal">
+      <h2>Built on the mat.<br>Backed by the science.</h2>
+      <p>If you're a grappler tired of guessing your way through cuts, fuel, and supplements, let's build your protocol.</p>
+      <a class="btn" href="https://my.practicebetter.io/#/68dd7e1c5032be138aa54e57/forms?f=69714b71f22767ce3b17348e" target="_blank" rel="noopener">Start your protocol</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>Grappling Protocol Company</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/kodakv1?igsh=MXduNTludHB5cjlmbA%3D%3D&utm_source=qr" target="_blank" rel="noopener">Instagram</a>
+        <span class="divider">·</span>
+        <a href="https://substack.com/@grapplingprotocol?r=2liedv&utm_medium=ios&utm_source=stories&shareImageVariant=light" target="_blank" rel="noopener">Substack</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('in-view');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(el=>io.observe(el));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in-view'));
+  }
+
+  const yearsEl = document.getElementById('yearsCount');
+  const target = 12;
+  if(reduceMotion){
+    yearsEl.textContent = target;
+  } else {
+    let start = null;
+    const duration = 900;
+    function step(ts){
+      if(!start) start = ts;
+      const progress = Math.min((ts-start)/duration, 1);
+      yearsEl.textContent = Math.floor(progress*target);
+      if(progress < 1) requestAnimationFrame(step);
+      else yearsEl.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+})();
+</script>
+</body>
+</html>
