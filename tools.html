@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#141712" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Nutrition Tools — Grappling Protocol</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink: #171a14;
+      --muted: #5a6052;
+      --paper: #f3f0e8;
+      --surface: #fffdf7;
+      --surface-2: #e8e5dc;
+      --line: #b8b9ae;
+      --lime: #cde94d;
+      --lime-ink: #1a2200;
+      --rust: #ca4f2c;
+      --rust-soft: #f1d0c5;
+      --focus: #196c84;
+      --shadow: 0 18px 45px rgba(26, 30, 18, .12);
+      --display: "Barlow Condensed", Impact, sans-serif;
+      --body: "IBM Plex Sans", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #f1f0e8;
+        --muted: #b8bcae;
+        --paper: #11130f;
+        --surface: #1b1e18;
+        --surface-2: #252920;
+        --line: #464c3d;
+        --lime: #d1ec57;
+        --lime-ink: #151c00;
+        --rust: #ec7753;
+        --rust-soft: #4b2a21;
+        --focus: #7fcee3;
+        --shadow: 0 18px 48px rgba(0, 0, 0, .32);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(90deg, transparent 0 49.5%, color-mix(in srgb, var(--line) 28%, transparent) 49.5% 50.5%, transparent 50.5%) top 0 center / 100% 9px no-repeat,
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    button, input, select, a { font: inherit; }
+    button, input, select { color: inherit; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .page { width: min(100%, 1020px); margin: 0 auto; padding: 32px 22px 56px; }
+
+    /* Back nav */
+    .back-nav { padding: 18px 0 0; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.85rem; font-weight: 600; text-decoration: none;
+      color: var(--muted); transition: color .15s;
+    }
+    .back-link:hover { color: var(--rust); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
+      gap: clamp(28px, 7vw, 84px);
+      align-items: end;
+      padding: clamp(32px, 7vw, 74px) 0 52px;
+      border-bottom: 2px solid var(--ink);
+    }
+    .identity { display: flex; gap: 12px; align-items: center; margin: 0 0 22px; color: var(--muted); font-weight: 600; }
+    .belt { width: 42px; height: 9px; background: var(--rust); box-shadow: inset -10px 0 var(--ink); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 20px;
+      max-width: 700px;
+      font-family: var(--display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: clamp(52px, 8.5vw, 94px);
+      line-height: .88;
+      letter-spacing: -.025em;
+    }
+    .accent-word { color: var(--rust); font-style: italic; }
+    .hero-copy { max-width: 650px; font-size: clamp(18px, 2.4vw, 22px); color: var(--muted); margin-bottom: 0; }
+    .hero-copy strong { color: var(--ink); }
+    .hero-aside { border-top: 9px solid var(--lime); padding-top: 20px; }
+    .hero-aside p { margin-bottom: 22px; }
+    .hero-aside strong { font-family: var(--display); font-size: 26px; line-height: 1; text-transform: uppercase; }
+    .button {
+      display: inline-flex;
+      min-height: 50px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border: 2px solid var(--ink);
+      background: var(--lime);
+      color: var(--lime-ink);
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 5px 5px 0 var(--ink);
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .button:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
+    .button.dark { background: var(--ink); color: var(--paper); box-shadow: 5px 5px 0 var(--rust); }
+    .button.ghost { background: transparent; color: var(--ink); box-shadow: none; }
+    .arrow { font-size: 22px; line-height: 1; }
+    .jump-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px 0 0; }
+    .jump-row .jump-link {
+      appearance: none;
+      min-height: 44px;
+      margin: -10px 0;
+      padding: 10px 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .jump-row .jump-link:hover { color: var(--ink); }
+    .jump-row span { color: var(--line); }
+    .tool-focus .hero { display: block; padding: 20px 0; }
+    .tool-focus .hero .identity,
+    .tool-focus .hero h1,
+    .tool-focus .hero-copy,
+    .tool-focus .hero-aside { display: none; }
+    .tool-focus .jump-row { padding-top: 0; }
+    .tool-focus .jump-link[aria-current="location"] { color: var(--ink); text-decoration-color: var(--rust); }
+    section { padding: 64px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 20px; }
+    .section-head { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; margin-bottom: 32px; align-items: start; }
+    .section-num { font-family: var(--display); font-size: 64px; line-height: .8; color: var(--rust); font-weight: 800; }
+    h2 { font-family: var(--display); font-size: clamp(38px, 6vw, 58px); line-height: .95; text-transform: uppercase; margin-bottom: 10px; }
+    .section-head p { color: var(--muted); max-width: 600px; margin-bottom: 0; }
+    .tool-shell { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .78fr); border: 2px solid var(--ink); box-shadow: var(--shadow); background: var(--surface); }
+    .inputs { padding: clamp(22px, 4vw, 36px); display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    label { display: grid; gap: 8px; font-weight: 700; }
+    .label-note { color: var(--muted); font-weight: 400; font-size: 13px; }
+    input, select {
+      width: 100%;
+      min-height: 50px;
+      border: 1.5px solid var(--line);
+      border-radius: 0;
+      background: var(--paper);
+      padding: 10px 12px;
+      font-size: 18px;
+    }
+    .results { background: var(--ink); color: var(--paper); padding: clamp(24px, 4vw, 38px); display: flex; flex-direction: column; justify-content: space-between; }
+    @media (prefers-color-scheme: dark) { .results { background: #f1f0e8; color: #161913; } }
+    .result-label { color: var(--lime); font-weight: 700; }
+    @media (prefers-color-scheme: dark) { .result-label { color: #6a771d; } }
+    .big-result { font-family: var(--display); font-size: clamp(48px, 8vw, 76px); line-height: .9; font-weight: 800; margin: 10px 0 12px; }
+    .pace { display: inline-block; width: fit-content; padding: 5px 9px; background: var(--lime); color: var(--lime-ink); font-weight: 800; margin-bottom: 18px; }
+    .result-note { margin-bottom: 24px; }
+    .micro { font-size: 13px; color: color-mix(in srgb, currentColor 72%, transparent); margin-bottom: 0; }
+    .quiz-shell { background: var(--surface); border-top: 9px solid var(--rust); padding: clamp(24px, 5vw, 48px); box-shadow: var(--shadow); }
+    .quiz-progress { display: flex; gap: 7px; margin-bottom: 28px; }
+    .quiz-progress i { flex: 1; height: 5px; background: var(--surface-2); }
+    .quiz-progress i.done { background: var(--rust); }
+    .question-count { color: var(--muted); font-size: 14px; font-weight: 700; margin-bottom: 7px; }
+    #questionText { font-family: var(--display); font-size: clamp(30px, 5vw, 44px); line-height: 1.05; margin-bottom: 24px; }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .option {
+      text-align: left;
+      min-height: 72px;
+      padding: 15px 17px;
+      border: 1.5px solid var(--line);
+      background: var(--paper);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .option:hover { border-color: var(--rust); background: var(--rust-soft); }
+    .quiz-result { display: none; }
+    .quiz-result.show { display: block; }
+    .quiz-result h3 { font-family: var(--display); font-size: clamp(40px, 7vw, 64px); line-height: .95; text-transform: uppercase; margin-bottom: 16px; }
+    .quiz-result p { max-width: 650px; font-size: 18px; }
+    .result-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+    .quiz-stack {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 18px;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      background: var(--paper);
+    }
+    .quiz-stack-mark {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      background: var(--rust);
+      color: #fff9f0;
+      font-family: var(--display);
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .quiz-stack-label { margin: 0 0 2px; color: var(--rust); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+    .quiz-stack h4 { margin: 0; font-family: var(--display); font-size: 25px; line-height: 1; text-transform: uppercase; }
+    .quiz-stack .button { white-space: nowrap; }
+    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink); background: var(--surface); box-shadow: var(--shadow); }
+    .stack-card { display: flex; flex-direction: column; min-width: 0; padding: 28px; border-right: 1px solid var(--line); }
+    .stack-card:last-child { border-right: 0; }
+    .stack-use { margin-bottom: 10px; color: var(--rust); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .stack-card h3 { margin-bottom: 14px; font-family: var(--display); font-size: clamp(28px, 4vw, 37px); line-height: .95; text-transform: uppercase; }
+    .stack-card p { flex: 1; color: var(--muted); }
+    .stack-card .button { align-self: flex-start; margin-top: 6px; }
+    .stack-note { max-width: 760px; margin: 22px 0 0; color: var(--muted); font-size: 14px; }
+    .checklist { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink); background: var(--surface); }
+    .phase { padding: 26px; border-right: 1px solid var(--line); }
+    .phase:last-child { border-right: 0; }
+    .phase-time { font-family: var(--display); color: var(--rust); font-size: 24px; font-weight: 800; text-transform: uppercase; }
+    .phase h3 { font-family: var(--display); font-size: 32px; line-height: 1; text-transform: uppercase; margin: 4px 0 20px; }
+    .phase ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+    .phase li { position: relative; padding-left: 24px; }
+    .phase li::before { content: ""; position: absolute; left: 0; top: .45em; width: 11px; height: 11px; background: var(--lime); border: 1px solid var(--ink); }
+    .closing { padding-bottom: 24px; border-bottom: 0; }
+    .closing-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 28px; align-items: center; background: var(--rust); color: #fff9f0; padding: clamp(28px, 6vw, 58px); }
+    .closing h2 { font-size: clamp(44px, 7vw, 72px); margin-bottom: 14px; }
+    .closing p { max-width: 620px; margin-bottom: 0; color: #fff3eb; }
+    .closing .button { width: 100%; background: var(--lime); color: var(--lime-ink); border-color: #191c14; box-shadow: 6px 6px 0 #191c14; }
+    footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 24px; color: var(--muted); font-size: 14px; }
+    footer p { margin-bottom: 0; }
+    @media (max-width: 760px) {
+      .page { padding-inline: 16px; }
+      .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 38px; }
+      .hero-aside { max-width: 520px; }
+      .section-head { grid-template-columns: 56px minmax(0, 1fr); gap: 14px; }
+      .section-num { font-size: 42px; }
+      .tool-shell { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: 1fr; }
+      .stack-card { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stack-card:last-child { border-bottom: 0; }
+      .checklist { grid-template-columns: 1fr; }
+      .phase { border-right: 0; border-bottom: 1px solid var(--line); }
+      .phase:last-child { border-bottom: 0; }
+      .closing-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      h1 { font-size: clamp(48px, 16vw, 72px); }
+      section { padding: 48px 0; }
+      .inputs, .options { grid-template-columns: 1fr; }
+      .jump-row span { display: none; }
+      .jump-row { gap: 10px 18px; }
+      .result-actions { flex-direction: column; align-items: stretch; }
+      .result-actions .button { width: 100%; }
+      .quiz-stack { grid-template-columns: 46px minmax(0, 1fr); }
+      .quiz-stack-mark { width: 46px; height: 46px; }
+      .quiz-stack .button { grid-column: 1 / -1; width: 100%; }
+      footer { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button { transition: none; } }
+  </style>
+</head>
+<body>
+  <main class="page" id="page">
+
+    <nav class="back-nav">
+      <a class="back-link" href="/">← Back to Grappling Protocol</a>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <p class="identity"><span class="belt" aria-hidden="true"></span>Kodi · Exercise Science &amp; Sports Nutrition</p>
+        <h1>Fuel the work.<br><span class="accent-word">Keep</span> the athlete.</h1>
+        <p class="hero-copy">Straightforward food and supplement strategy for <strong>masters grappling athletes age 30 and older.</strong> Built around training, recovery, and the realities of making weight.</p>
+        <nav class="jump-row" aria-label="Page tools">
+          <button class="jump-link" type="button" data-scroll-target="planner">Cut planner</button><span aria-hidden="true">•</span>
+          <button class="jump-link" type="button" data-scroll-target="quiz">Fueling quiz</button><span aria-hidden="true">•</span>
+          <button class="jump-link" type="button" data-scroll-target="stack">Masters Stack</button><span aria-hidden="true">•</span>
+          <button class="jump-link" type="button" data-scroll-target="checklist">Fight-week check</button>
+        </nav>
+      </div>
+      <aside class="hero-aside">
+        <p><strong>Your game plan should fit your life.</strong><br>Get a nutrition protocol built for your schedule, training load, and competition goals.</p>
+        <a class="button" href="https://my.practicebetter.io/#/68dd7e1c5032be138aa54e57/forms?f=69714b71f22767ce3b17348e" target="_blank" rel="noopener">Start your protocol <span class="arrow" aria-hidden="true">→</span></a>
+      </aside>
+    </header>
+
+    <section id="planner">
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">01</div>
+        <div><h2>Cut pace check</h2><p>Pressure-test the timeline before you try to force the number. This estimates the weekly rate your target requires.</p></div>
+      </div>
+      <div class="tool-shell">
+        <div class="inputs">
+          <label>Current weight <span class="label-note">lb</span><input id="currentWeight" type="number" inputmode="decimal" min="80" max="400" step="0.1" value="185" aria-describedby="calcStatus"></label>
+          <label>Target weight <span class="label-note">lb</span><input id="targetWeight" type="number" inputmode="decimal" min="80" max="400" step="0.1" value="175" aria-describedby="calcStatus"></label>
+          <label>Days until weigh-in<input id="daysOut" type="number" inputmode="numeric" min="1" max="365" step="1" value="56" aria-describedby="calcStatus"></label>
+          <label>Recovery window<select id="recoveryWindow" aria-describedby="calcStatus"><option value="same">Same day</option><option value="short">Under 6 hours</option><option value="long" selected>Overnight / next day</option></select></label>
+        </div>
+        <div class="results" id="calcStatus" aria-live="polite">
+          <div>
+            <div class="result-label">Required average</div>
+            <div class="big-result" id="rateResult">1.3 lb/wk</div>
+            <div class="pace" id="paceResult">MANAGEABLE PACE</div>
+            <p class="result-note" id="noteResult">About 0.7% of body weight per week. Your timeline leaves room to protect training quality.</p>
+          </div>
+          <p class="micro">Planning estimate only. Body composition, health history, and weigh-in rules matter; aggressive cuts need qualified oversight.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">02</div>
+        <div><h2>Find your bottleneck</h2><p>Four quick questions. Get the first part of your nutrition setup to fix—not another giant list of rules.</p></div>
+      </div>
+      <div class="quiz-shell">
+        <div id="quizQuestions">
+          <div class="quiz-progress" aria-hidden="true"><i class="done"></i><i></i><i></i><i></i></div>
+          <div class="question-count" id="questionCount">QUESTION 1 OF 4</div>
+          <h3 id="questionText">What usually breaks first during a hard training week?</h3>
+          <div class="options" id="options"></div>
+        </div>
+        <div class="quiz-result" id="quizResult" aria-live="polite">
+          <p class="question-count">YOUR FIRST MOVE</p>
+          <h3 id="quizTitle"></h3>
+          <p id="quizCopy"></p>
+          <div class="quiz-stack" id="quizStack">
+            <div class="quiz-stack-mark" aria-hidden="true">Rx</div>
+            <div>
+              <p class="quiz-stack-label">Protocol match</p>
+              <h4 id="quizStackTitle"></h4>
+            </div>
+            <a class="button" id="quizStackLink" href="#" target="_blank" rel="noopener">View plan <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div class="result-actions">
+            <a class="button" href="https://my.practicebetter.io/#/68dd7e1c5032be138aa54e57/forms?f=69714b71f22767ce3b17348e" target="_blank" rel="noopener">Build the full protocol <span class="arrow" aria-hidden="true">→</span></a>
+            <button class="button ghost" type="button" id="restartQuiz">Retake quiz</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack">
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">03</div>
+        <div><h2>The Masters Stack</h2><p>Three focused protocols for the demands that show up most often after 30. Choose the gap you need to close—not the longest supplement list.</p></div>
+      </div>
+      <div class="stack-grid">
+        <article class="stack-card">
+          <p class="stack-use">Train &amp; repeat</p>
+          <h3>Performance, Endurance &amp; Recovery</h3>
+          <p>Support for hard rounds, repeat efforts, and rebuilding between sessions.</p>
+          <a class="button" href="https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NjA=" target="_blank" rel="noopener">View protocol <span class="arrow" aria-hidden="true">→</span></a>
+        </article>
+        <article class="stack-card">
+          <p class="stack-use">Stay on the mat</p>
+          <h3>Joint Health &amp; Inflammatory Support</h3>
+          <p>Targeted support for the accumulated joint and tissue stress of consistent grappling.</p>
+          <a class="button" href="https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NTk=" target="_blank" rel="noopener">View protocol <span class="arrow" aria-hidden="true">→</span></a>
+        </article>
+        <article class="stack-card">
+          <p class="stack-use">Recover overnight</p>
+          <h3>Sleep, Stress &amp; Recovery Support</h3>
+          <p>Support for winding down, managing training stress, and making recovery count.</p>
+          <a class="button" href="https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NTg=" target="_blank" rel="noopener">View protocol <span class="arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <p class="stack-note">Supplement plans are educational and should fit your health history, medications, and total nutrition setup. Check with a qualified clinician when appropriate.</p>
+    </section>
+
+    <section id="checklist">
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">04</div>
+        <div><h2>Fight-week check</h2><p>A short readiness scan for the final stretch. Decisions first; improvisation last.</p></div>
+      </div>
+      <div class="checklist">
+        <article class="phase">
+          <div class="phase-time">72–48 hours</div>
+          <h3>Remove surprises</h3>
+          <ul>
+            <li>Use foods your gut already knows.</li>
+            <li>Confirm weigh-in time and recovery window.</li>
+            <li>Pack fluids, meals, and backups before travel.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <div class="phase-time">Final 24 hours</div>
+          <h3>Follow the plan</h3>
+          <ul>
+            <li>Check the trend, not every scale fluctuation.</li>
+            <li>Keep changes deliberate—no last-minute experiments.</li>
+            <li>Protect sleep and keep unnecessary stress low.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <div class="phase-time">After weigh-in</div>
+          <h3>Rebuild to perform</h3>
+          <ul>
+            <li>Start the hydration and sodium plan promptly.</li>
+            <li>Choose easy-to-digest carbs you've tested.</li>
+            <li>Stage the next meal before the first is finished.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="closing-grid">
+        <div><h2>Less guessing.<br>More good rounds.</h2><p>A useful cut starts well before fight week. Build a food and supplement protocol around the athlete you are now—not the schedule you had at 22.</p></div>
+        <a class="button" href="https://my.practicebetter.io/#/68dd7e1c5032be138aa54e57/forms?f=69714b71f22767ce3b17348e" target="_blank" rel="noopener">Start your protocol <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <footer>
+      <p><a href="/" style="text-decoration:none;">← Grappling Protocol</a></p>
+      <p>Education, not medical diagnosis or treatment.</p>
+    </footer>
+  </main>
+
+  <script>
+    const page = document.getElementById('page');
+    const hero = document.querySelector('.hero');
+    document.querySelectorAll('[data-scroll-target]').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.scrollTarget);
+        if (!target) return;
+        page.classList.add('tool-focus');
+        page.insertBefore(target, hero.nextSibling);
+        document.querySelectorAll('[data-scroll-target]').forEach(link => {
+          if (link === button) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+        target.setAttribute('tabindex', '-1');
+        target.focus();
+      });
+    });
+
+    const currentWeight = document.getElementById('currentWeight');
+    const targetWeight = document.getElementById('targetWeight');
+    const daysOut = document.getElementById('daysOut');
+    const recoveryWindow = document.getElementById('recoveryWindow');
+    const rateResult = document.getElementById('rateResult');
+    const paceResult = document.getElementById('paceResult');
+    const noteResult = document.getElementById('noteResult');
+
+    function updatePlanner() {
+      const current = Number(currentWeight.value);
+      const target = Number(targetWeight.value);
+      const days = Number(daysOut.value);
+      const windowType = recoveryWindow.value;
+      if (!current || !target || !days || current < 80 || target < 80 || days < 1) {
+        rateResult.textContent = '—';
+        paceResult.textContent = 'CHECK YOUR NUMBERS';
+        noteResult.textContent = 'Enter valid weights and at least one day to see the pace.';
+        return;
+      }
+      const difference = current - target;
+      if (difference <= 0) {
+        rateResult.textContent = '0 lb/wk';
+        paceResult.textContent = 'NO CUT NEEDED';
+        noteResult.textContent = 'Your target is at or above your current weight. Shift the focus to fueling training and arriving recovered.';
+        return;
+      }
+      const weeks = days / 7;
+      const perWeek = difference / weeks;
+      const weeklyPct = (perWeek / current) * 100;
+      rateResult.textContent = perWeek.toFixed(1) + ' lb/wk';
+      let label = 'MANAGEABLE PACE';
+      let note = `About ${weeklyPct.toFixed(1)}% of body weight per week. Your timeline leaves room to protect training quality.`;
+      if (weeklyPct <= .5) {
+        label = 'CONSERVATIVE PACE';
+        note = `About ${weeklyPct.toFixed(1)}% of body weight per week. That gives you room to make gradual adjustments while monitoring performance.`;
+      } else if (weeklyPct > 1) {
+        label = 'HIGH-STRESS PACE';
+        note = `About ${weeklyPct.toFixed(1)}% of body weight per week. Revisit the target or timeline with a qualified professional before forcing the cut.`;
+      }
+      if (windowType === 'same') note += ' A same-day weigh-in leaves little recovery time, so dehydration-based tactics carry extra performance risk.';
+      if (windowType === 'short') note += ' A short recovery window makes a tested post-weigh-in plan especially important.';
+      paceResult.textContent = label;
+      noteResult.textContent = note;
+    }
+    [currentWeight, targetWeight, daysOut, recoveryWindow].forEach(el => el.addEventListener('input', updatePlanner));
+    updatePlanner();
+
+    const questions = [
+      { text: 'What usually breaks first during a hard training week?', answers: [
+        ['I run out of energy mid-session', 'fuel'], ['Meals become random or skipped', 'structure'], ['Soreness and poor sleep pile up', 'recovery'], ['My weight starts driving every decision', 'cut']
+      ]},
+      { text: 'Which sentence sounds most familiar?', answers: [
+        ['I train hard, then realize I barely ate', 'fuel'], ['I know a lot, but can\'t make it consistent', 'structure'], ['I\'m tired even on lighter days', 'recovery'], ['I wait too long to address competition weight', 'cut']
+      ]},
+      { text: 'What would help you most this month?', answers: [
+        ['Knowing what to eat around training', 'fuel'], ['A repeatable default day of meals', 'structure'], ['Better sleep and between-session recovery', 'recovery'], ['A calmer path to my target class', 'cut']
+      ]},
+      { text: 'Where do you want the least guesswork?', answers: [
+        ['Pre- and post-training meals', 'fuel'], ['Shopping and meal prep', 'structure'], ['Rest days and hard-day recovery', 'recovery'], ['The final weeks before weigh-in', 'cut']
+      ]}
+    ];
+    const outcomes = {
+      fuel: { title: 'Fuel the work first.', copy: 'Your answers point to under-fueling around training. Start by making the meals before and after hard sessions predictable; then adjust the rest of the day around them.', stack: 'Performance, Endurance & Recovery', url: 'https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NjA=' },
+      structure: { title: 'Make the default easier.', copy: 'You probably don\'t need more nutrition facts—you need fewer decisions. Build two or three repeatable meal combinations that work on your busiest days.', stack: 'Performance, Endurance & Recovery', url: 'https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NjA=' },
+      recovery: { title: 'Treat recovery as training.', copy: 'Your limiting factor may be what happens between sessions. Bring sleep, total intake, hydration, and recovery-day meals into the same plan as your rounds.', stack: 'Sleep, Stress & Recovery Support', url: 'https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NTg=' },
+      cut: { title: 'Move the cut upstream.', copy: 'Competition weight is taking up too much space too late. Start with a realistic timeline, watch the weekly trend, and protect the work that makes you competitive.', stack: 'Performance, Endurance & Recovery', url: 'https://us.fullscript.com/s/grapplingprotocol/shop/plans/TXVsdGlQYXRpZW50UGxhbi0xODk5NjA=' }
+    };
+    let qIndex = 0;
+    let scores = { fuel: 0, structure: 0, recovery: 0, cut: 0 };
+    const questionText = document.getElementById('questionText');
+    const questionCount = document.getElementById('questionCount');
+    const options = document.getElementById('options');
+    const quizQuestions = document.getElementById('quizQuestions');
+    const quizResult = document.getElementById('quizResult');
+    const quizTitle = document.getElementById('quizTitle');
+    const quizCopy = document.getElementById('quizCopy');
+    const quizStackTitle = document.getElementById('quizStackTitle');
+    const quizStackLink = document.getElementById('quizStackLink');
+
+    function renderQuestion() {
+      const q = questions[qIndex];
+      questionText.textContent = q.text;
+      questionCount.textContent = `QUESTION ${qIndex + 1} OF ${questions.length}`;
+      document.querySelectorAll('.quiz-progress i').forEach((el, i) => el.classList.toggle('done', i <= qIndex));
+      options.innerHTML = '';
+      q.answers.forEach(([label, key]) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option';
+        btn.textContent = label;
+        btn.addEventListener('click', () => chooseAnswer(key));
+        options.appendChild(btn);
+      });
+    }
+    function chooseAnswer(key) {
+      scores[key] += 1;
+      qIndex += 1;
+      if (qIndex < questions.length) renderQuestion(); else showResult();
+    }
+    function showResult() {
+      const winner = Object.keys(scores).reduce((a, b) => scores[b] > scores[a] ? b : a);
+      const outcome = outcomes[winner];
+      quizTitle.textContent = outcome.title;
+      quizCopy.textContent = outcome.copy;
+      quizStackTitle.textContent = outcome.stack;
+      quizStackLink.href = outcome.url;
+      quizStackLink.setAttribute('aria-label', `View the ${outcome.stack} plan on Fullscript`);
+      quizQuestions.style.display = 'none';
+      quizResult.classList.add('show');
+    }
+    document.getElementById('restartQuiz').addEventListener('click', () => {
+      qIndex = 0;
+      scores = { fuel: 0, structure: 0, recovery: 0, cut: 0 };
+      quizResult.classList.remove('show');
+      quizQuestions.style.display = 'block';
+      renderQuestion();
+    });
+    renderQuestion();
+  </script>
+</body>
+</html>
